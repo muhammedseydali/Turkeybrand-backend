@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, ProductCard as ProductCardT } from "../api";
+import { DEMO_PRODUCTS } from "../demoData";
 import ProductCard from "../components/ProductCard";
 
 function Row({ title, viewAllHref, products }: { title: string; viewAllHref: string; products: ProductCardT[] }) {
@@ -19,16 +20,32 @@ function Row({ title, viewAllHref, products }: { title: string; viewAllHref: str
 }
 
 export default function Home() {
-  const [shirts, setShirts] = useState<ProductCardT[]>([]);
-  const [tshirts, setTshirts] = useState<ProductCardT[]>([]);
-  const [newArrivals, setNewArrivals] = useState<ProductCardT[]>([]);
-  const [bestSellers, setBestSellers] = useState<ProductCardT[]>([]);
+  const [shirts, setShirts] = useState<ProductCardT[]>(() =>
+    DEMO_PRODUCTS.filter((p) => p.product_type === "shirt")
+  );
+  const [tshirts, setTshirts] = useState<ProductCardT[]>(() =>
+    DEMO_PRODUCTS.filter((p) => p.product_type === "tshirt")
+  );
+  const [newArrivals, setNewArrivals] = useState<ProductCardT[]>(() =>
+    DEMO_PRODUCTS.filter((p) => p.is_new_arrival)
+  );
+  const [bestSellers, setBestSellers] = useState<ProductCardT[]>(() =>
+    DEMO_PRODUCTS.filter((p) => p.is_best_seller)
+  );
 
   useEffect(() => {
-    api.get("/api/products", { params: { product_type: "shirt", page_size: 4 } }).then((r) => setShirts(r.data.items));
-    api.get("/api/products", { params: { product_type: "tshirt", page_size: 4 } }).then((r) => setTshirts(r.data.items));
-    api.get("/api/products", { params: { new_arrivals: true, page_size: 4 } }).then((r) => setNewArrivals(r.data.items));
-    api.get("/api/products", { params: { best_sellers: true, page_size: 4 } }).then((r) => setBestSellers(r.data.items));
+    api.get("/api/products", { params: { product_type: "shirt", page_size: 4 } })
+      .then((r) => { if (r.data?.items?.length) setShirts(r.data.items); })
+      .catch(() => {});
+    api.get("/api/products", { params: { product_type: "tshirt", page_size: 4 } })
+      .then((r) => { if (r.data?.items?.length) setTshirts(r.data.items); })
+      .catch(() => {});
+    api.get("/api/products", { params: { new_arrivals: true, page_size: 4 } })
+      .then((r) => { if (r.data?.items?.length) setNewArrivals(r.data.items); })
+      .catch(() => {});
+    api.get("/api/products", { params: { best_sellers: true, page_size: 4 } })
+      .then((r) => { if (r.data?.items?.length) setBestSellers(r.data.items); })
+      .catch(() => {});
   }, []);
 
   return (

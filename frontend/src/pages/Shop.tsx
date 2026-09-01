@@ -1,25 +1,26 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { api, ProductCard as ProductCardT, Category, Material, Size, Color } from "../api";
+import { DEMO_PRODUCTS, DEMO_CATEGORIES, DEMO_MATERIALS, DEMO_SIZES, DEMO_COLORS } from "../demoData";
 import ProductCard from "../components/ProductCard";
 
 export default function Shop() {
   const [params, setParams] = useSearchParams();
-  const [items, setItems] = useState<ProductCardT[]>([]);
-  const [total, setTotal] = useState(0);
+  const [items, setItems] = useState<ProductCardT[]>(DEMO_PRODUCTS);
+  const [total, setTotal] = useState(DEMO_PRODUCTS.length);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const [, setCategories] = useState<Category[]>([]);
-  const [materials, setMaterials] = useState<Material[]>([]);
-  const [sizes, setSizes] = useState<Size[]>([]);
-  const [colors, setColors] = useState<Color[]>([]);
+  const [, setCategories] = useState<Category[]>(DEMO_CATEGORIES);
+  const [materials, setMaterials] = useState<Material[]>(DEMO_MATERIALS);
+  const [sizes, setSizes] = useState<Size[]>(DEMO_SIZES);
+  const [colors, setColors] = useState<Color[]>(DEMO_COLORS);
 
   useEffect(() => {
-    api.get("/api/categories").then((r) => setCategories(r.data));
-    api.get("/api/materials").then((r) => setMaterials(r.data));
-    api.get("/api/sizes").then((r) => setSizes(r.data));
-    api.get("/api/colors").then((r) => setColors(r.data));
+    api.get("/api/categories").then((r) => { if (r.data?.length) setCategories(r.data); }).catch(() => {});
+    api.get("/api/materials").then((r) => { if (r.data?.length) setMaterials(r.data); }).catch(() => {});
+    api.get("/api/sizes").then((r) => { if (r.data?.length) setSizes(r.data); }).catch(() => {});
+    api.get("/api/colors").then((r) => { if (r.data?.length) setColors(r.data); }).catch(() => {});
   }, []);
 
   const page = Number(params.get("page") || 1);
@@ -28,12 +29,18 @@ export default function Shop() {
     setLoading(true);
     const query: Record<string, string> = {};
     params.forEach((v, k) => { query[k] = v; });
-    api.get("/api/products", { params: query }).then((r) => {
-      setItems(r.data.items);
-      setTotal(r.data.total);
-      setTotalPages(r.data.total_pages);
-      setLoading(false);
-    });
+    api.get("/api/products", { params: query })
+      .then((r) => {
+        if (r.data?.items) {
+          setItems(r.data.items);
+          setTotal(r.data.total);
+          setTotalPages(r.data.total_pages);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        setLoading(false);
+      });
   }, [params]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);

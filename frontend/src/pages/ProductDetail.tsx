@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api, ProductDetail as ProductDetailT, ProductCard as ProductCardT, money } from "../api";
+import { getDemoProductDetail, DEMO_PRODUCTS } from "../demoData";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import ProductCard from "../components/ProductCard";
@@ -11,23 +12,35 @@ export default function ProductDetail() {
   const { addLine } = useCart();
   const toast = useToast();
 
-  const [product, setProduct] = useState<ProductDetailT | null>(null);
-  const [related, setRelated] = useState<ProductCardT[]>([]);
+  const [product, setProduct] = useState<ProductDetailT | null>(() => slug ? getDemoProductDetail(slug) : null);
+  const [related, setRelated] = useState<ProductCardT[]>(() => DEMO_PRODUCTS.slice(0, 4));
   const [activeImage, setActiveImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(() => {
+    const demo = slug ? getDemoProductDetail(slug) : null;
+    return demo?.variants[0]?.color.name ?? null;
+  });
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     if (!slug) return;
-    api.get(`/api/products/${slug}`).then((r) => {
-      setProduct(r.data);
-      setSelectedColor(r.data.variants[0]?.color.name ?? null);
-      setSelectedSize(null);
-      setActiveImage(0);
-      setQuantity(1);
-    });
-    api.get(`/api/products/${slug}/related`).then((r) => setRelated(r.data));
+    api.get(`/api/products/${slug}`)
+      .then((r) => {
+        if (r.data) {
+          setProduct(r.data);
+          setSelectedColor(r.data.variants[0]?.color.name ?? null);
+          setSelectedSize(null);
+          setActiveImage(0);
+          setQuantity(1);
+        }
+      })
+      .catch(() => {
+        const demo = getDemoProductDetail(slug);
+        if (demo && !product) setProduct(demo);
+      });
+    api.get(`/api/products/${slug}/related`)
+      .then((r) => { if (r.data?.length) setRelated(r.data); })
+      .catch(() => {});
   }, [slug]);
 
   const colors = useMemo(() => {

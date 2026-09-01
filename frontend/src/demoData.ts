@@ -1,0 +1,200 @@
+import { ProductCard, ProductDetail, Category, Material, Size, Color } from "./api";
+
+export const DEMO_CATEGORIES: Category[] = [
+  { id: 1, name: "Shirts", slug: "shirts" },
+  { id: 2, name: "T-Shirts", slug: "t-shirts" },
+];
+
+export const DEMO_MATERIALS: Material[] = [
+  { id: 1, name: "100% Cotton" },
+  { id: 2, name: "Cotton-Linen Blend" },
+  { id: 3, name: "Polyester Blend" },
+  { id: 4, name: "Oxford Cotton" },
+  { id: 5, name: "Pima Cotton" },
+];
+
+export const DEMO_SIZES: Size[] = [
+  { id: 1, name: "S" },
+  { id: 2, name: "M" },
+  { id: 3, name: "L" },
+  { id: 4, name: "XL" },
+  { id: 5, name: "XXL" },
+];
+
+export const DEMO_COLORS: Color[] = [
+  { id: 1, name: "White", hex_code: "#FFFFFF" },
+  { id: 2, name: "Black", hex_code: "#111111" },
+  { id: 3, name: "Blue", hex_code: "#2563EB" },
+  { id: 4, name: "Grey", hex_code: "#9CA3AF" },
+  { id: 5, name: "Maroon", hex_code: "#7F1D1D" },
+];
+
+const SHIRT_IMG = "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop";
+const SHIRT_IMG2 = "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop";
+const TEE_IMG = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop";
+const TEE_IMG2 = "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=800&auto=format&fit=crop";
+
+export const DEMO_PRODUCTS: ProductCard[] = [
+  {
+    id: 1,
+    name: "Premium Cotton Casual Shirt",
+    slug: "premium-cotton-casual-shirt",
+    brand: "Turkeybrand",
+    sku: "SH-46048",
+    product_type: "shirt",
+    price: 1999,
+    sale_price: 1699,
+    status: "active",
+    is_new_arrival: true,
+    is_best_seller: true,
+    total_stock: 45,
+    thumbnail: SHIRT_IMG,
+    category: "Shirts",
+    material: "100% Cotton",
+  },
+  {
+    id: 2,
+    name: "Classic Oxford Formal Shirt",
+    slug: "classic-oxford-formal-shirt",
+    brand: "Turkeybrand",
+    sku: "SH-38221",
+    product_type: "shirt",
+    price: 1899,
+    sale_price: null,
+    status: "active",
+    is_new_arrival: false,
+    is_best_seller: true,
+    total_stock: 41,
+    thumbnail: SHIRT_IMG2,
+    category: "Shirts",
+    material: "Cotton-Linen Blend",
+  },
+  {
+    id: 3,
+    name: "Slim Fit Checked Shirt",
+    slug: "slim-fit-checked-shirt",
+    brand: "Turkeybrand",
+    sku: "SH-38785",
+    product_type: "shirt",
+    price: 1799,
+    sale_price: null,
+    status: "active",
+    is_new_arrival: false,
+    is_best_seller: false,
+    total_stock: 42,
+    thumbnail: SHIRT_IMG,
+    category: "Shirts",
+    material: "Pima Cotton",
+  },
+  {
+    id: 4,
+    name: "Linen Summer Shirt",
+    slug: "linen-summer-shirt",
+    brand: "Turkeybrand",
+    sku: "SH-99166",
+    product_type: "shirt",
+    price: 2499,
+    sale_price: null,
+    status: "active",
+    is_new_arrival: true,
+    is_best_seller: false,
+    total_stock: 35,
+    thumbnail: SHIRT_IMG2,
+    category: "Shirts",
+    material: "100% Cotton",
+  },
+  {
+    id: 5,
+    name: "Essential Crew Neck Tee",
+    slug: "essential-crew-neck-tee",
+    brand: "Turkeybrand",
+    sku: "TS-62227",
+    product_type: "tshirt",
+    price: 799,
+    sale_price: 599,
+    status: "active",
+    is_new_arrival: true,
+    is_best_seller: true,
+    total_stock: 60,
+    thumbnail: TEE_IMG,
+    category: "T-Shirts",
+    material: "100% Cotton",
+  },
+  {
+    id: 6,
+    name: "Graphic Print T-Shirt",
+    slug: "graphic-print-t-shirt",
+    brand: "Turkeybrand",
+    sku: "TS-10221",
+    product_type: "tshirt",
+    price: 899,
+    sale_price: null,
+    status: "active",
+    is_new_arrival: false,
+    is_best_seller: true,
+    total_stock: 42,
+    thumbnail: TEE_IMG2,
+    category: "T-Shirts",
+    material: "Oxford Cotton",
+  },
+  {
+    id: 7,
+    name: "Polo Collar T-Shirt",
+    slug: "polo-collar-t-shirt",
+    brand: "Turkeybrand",
+    sku: "TS-77812",
+    product_type: "tshirt",
+    price: 999,
+    sale_price: 799,
+    status: "active",
+    is_new_arrival: false,
+    is_best_seller: false,
+    total_stock: 55,
+    thumbnail: TEE_IMG,
+    category: "T-Shirts",
+    material: "Pima Cotton",
+  },
+  {
+    id: 8,
+    name: "Oversized Streetwear Tee",
+    slug: "oversized-streetwear-tee",
+    brand: "Turkeybrand",
+    sku: "TS-33291",
+    product_type: "tshirt",
+    price: 1199,
+    sale_price: 999,
+    status: "active",
+    is_new_arrival: true,
+    is_best_seller: false,
+    total_stock: 28,
+    thumbnail: TEE_IMG2,
+    category: "T-Shirts",
+    material: "100% Cotton",
+  },
+];
+
+export function getDemoProductDetail(slug: string): ProductDetail | null {
+  const p = DEMO_PRODUCTS.find((item) => item.slug === slug);
+  if (!p) return null;
+  return {
+    ...p,
+    description: "Built for breathable daily comfort in Kerala & Tamil Nadu weather. Tailored with reinforced seams, natural dyes, and premium pre-washed combed fibers.",
+    created_at: new Date().toISOString(),
+    category: { id: 1, name: p.category || "Shirts", slug: p.category?.toLowerCase() || "shirts" },
+    material: { id: 1, name: p.material || "100% Cotton" },
+    images: [
+      { id: 1, image_url: p.thumbnail || SHIRT_IMG, sort_order: 0 },
+      { id: 2, image_url: SHIRT_IMG2, sort_order: 1 },
+    ],
+    variants: [
+      { id: 1, size: DEMO_SIZES[0], color: DEMO_COLORS[0], sku: `${p.sku}-S`, stock_quantity: 10, sold_quantity: 4, price_override: null },
+      { id: 2, size: DEMO_SIZES[1], color: DEMO_COLORS[0], sku: `${p.sku}-M`, stock_quantity: 15, sold_quantity: 6, price_override: null },
+      { id: 3, size: DEMO_SIZES[2], color: DEMO_COLORS[1], sku: `${p.sku}-L`, stock_quantity: 12, sold_quantity: 8, price_override: null },
+      { id: 4, size: DEMO_SIZES[3], color: DEMO_COLORS[2], sku: `${p.sku}-XL`, stock_quantity: 8, sold_quantity: 2, price_override: null },
+    ],
+    reviews: [
+      { id: 1, customer_name: "Rahul N.", rating: 5, comment: "Top notch stitching. Breathable in Kerala humidity!", created_at: new Date().toISOString() },
+      { id: 2, customer_name: "Anjali M.", rating: 5, comment: "Holds up shape even after 10+ washes. Loved the fit.", created_at: new Date().toISOString() },
+    ],
+  };
+}
