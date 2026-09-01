@@ -11,7 +11,7 @@ from .routers import products, orders, payments, admin
 # use Alembic migrations for real schema evolution in production).
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Turkeybrand API", version="1.0.0")
+app = FastAPI(title="Turkeybrand API", version="1.0.1")
 
 allowed_origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
 app.add_middleware(
