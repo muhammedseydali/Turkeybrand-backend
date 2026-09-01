@@ -1,6 +1,7 @@
 """Populate the database with realistic demo data.
 Run with:  python -m app.seed
 """
+import os
 import random
 from datetime import datetime, timedelta
 
@@ -52,8 +53,12 @@ def main():
     db.flush()
 
     # Admin + demo customers
-    admin = models.User(name="Store Admin", email="admin@turkeybrand.dev",
-                         password_hash=auth.hash_password("Admin@123"), role=models.Role.admin)
+    admin_email = os.getenv("ADMIN_EMAIL", "admin@turkeybrand.dev")
+    admin_password = os.getenv("ADMIN_PASSWORD", "Admin@123")
+    admin_name = os.getenv("ADMIN_NAME", "Store Admin")
+
+    admin = models.User(name=admin_name, email=admin_email,
+                         password_hash=auth.hash_password(admin_password), role=models.Role.admin)
     admin_compat = models.User(name="Store Admin (Legacy)", email="admin@shopforge.dev",
                                 password_hash=auth.hash_password("Admin@123"), role=models.Role.admin)
     customers = [
