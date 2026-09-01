@@ -13,10 +13,18 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Turkeybrand API", version="1.0.1")
 
-allowed_origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
+cors_origins_env = os.getenv("CORS_ORIGINS", "*").strip()
+if cors_origins_env == "*" or not cors_origins_env:
+    allow_origins = ["*"]
+    allow_origin_regex = r"^https?://.*"
+else:
+    allow_origins = [o.strip() for o in cors_origins_env.split(",") if o.strip()]
+    allow_origin_regex = None
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=allow_origins,
+    allow_origin_regex=allow_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
