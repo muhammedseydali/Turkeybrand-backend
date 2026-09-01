@@ -29,6 +29,20 @@ app.include_router(payments.router)
 app.include_router(admin.router)
 
 
+@app.get("/")
+def root():
+    return {
+        "brand": "Turkeybrand",
+        "service": "Turkeybrand Backend API",
+        "version": "1.0.1",
+        "status": "online",
+        "healthcheck": "/api/health",
+        "api_docs": "/docs",
+        "products_endpoint": "/api/products",
+        "note": "This is the backend API. The React storefront runs on Netlify/Vercel."
+    }
+
+
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
