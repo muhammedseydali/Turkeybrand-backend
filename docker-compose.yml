@@ -1,0 +1,38 @@
+services:
+  backend:
+    build: ./backend
+    container_name: turkeybrand-backend
+    ports:
+      - "8001:8000"
+    environment:
+      # Change this to a long random string before exposing the app beyond your machine.
+      JWT_SECRET: change-this-to-a-long-random-string-in-production
+      CORS_ORIGINS: http://localhost:8081,http://localhost:8080,http://localhost:5173
+      AUTO_SEED: "true"
+    volumes:
+      - turkeybrand_data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Baked into the JS bundle at build time. This is the URL the *browser*
+        # (on your host machine) will call, so it's localhost:8001, not "backend:8000".
+        VITE_API_URL: http://localhost:8001
+    container_name: turkeybrand-frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  turkeybrand_data:
