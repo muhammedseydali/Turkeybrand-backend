@@ -15,7 +15,7 @@ export default function AdminLogin() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const u = await login(email, password);
+      const u = await login(email.trim().toLowerCase(), password.trim());
       if (u.role !== "admin") {
         logout();
         toast.show("This account doesn't have admin access", "error");
