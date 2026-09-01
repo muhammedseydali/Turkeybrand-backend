@@ -15,7 +15,7 @@ app = FastAPI(title="Turkeybrand API", version="1.0.1")
 
 cors_origins_env = os.getenv("CORS_ORIGINS", "*").strip()
 if cors_origins_env == "*" or not cors_origins_env:
-    allow_origins = ["*"]
+    allow_origins = []
     allow_origin_regex = r"^https?://.*"
 else:
     allow_origins = [o.strip() for o in cors_origins_env.split(",") if o.strip()]
